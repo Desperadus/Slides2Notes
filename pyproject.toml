@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "slides2notes"
+version = "0.1.0"
+description = "create lecture notes from pdf slides with the power of LLMs"
+authors = ["Tomas Jelinek <tomgolf.jelinek@gmail.com>"]
+license = "LPGL"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+google-generativeai = "^0.3.2"
+pillow = "^10.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
