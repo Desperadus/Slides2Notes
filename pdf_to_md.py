@@ -10,7 +10,7 @@ VERBOSE = False
 
 def printing(*args, **kwargs):
     if VERBOSE:
-        print(*args, **kwargs)
+        tqdm.write(*args, **kwargs)
 
 def load_model():
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -19,19 +19,18 @@ def load_model():
     model = genai.GenerativeModel("gemini-pro-vision")
     return model
 
-def get_text_from_image(model, png_slides):
+def get_text_from_image(model, png_slides, intro_prompt=prompts.basic_eng, new_image_prompt=prompts.new_image_prompt_eng):
     # chat = model.start_chat(history=[])
-    intro_prompt = prompts.basic_cz
-    new_image_prompt = prompts.new_image_prompt_cz
     results = []
-    response = model.generate_content([intro_prompt, PIL.Image.open(png_slides[0])])
+    response = model.generate_content([intro_prompt, PIL.Image.open(png_slides[2])])
     results.append(response.text)
     printing(response.text)
 
-    for slide in tqdm(png_slides[1:10]):
+    for slide in tqdm(png_slides[3:10]):
         image = PIL.Image.open(slide)
-        response = model.generate_content([new_image_prompt+results[-1],image])
+        response = model.generate_content([new_image_prompt,image])
         results.append(response.text)
+        printing(response.text)
     return results
 
 
@@ -51,5 +50,6 @@ if __name__ == "__main__":
     model = load_model()
     results = get_text_from_image(model, img_paths)
     result = "\n".join(results)
+    result = result.replace(" #", "#")
     with open(args.output, "w") as f:
         f.write(result)
