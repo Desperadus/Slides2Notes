@@ -45,7 +45,7 @@ def read_and_chunk_md_file(filepath, slides_per_chunk=3):
 def generate_notes_for_chunks(model, chunks, output_filepath, start_chunk):
     chat = model.start_chat(history=[])
     prompt = """Generate detailed and information rich notes from these sparse slides. Notes you generate should be very informative and detailed (as much as possible) for the exam preparation. 
-    Write your response formated in markdown and if there is mathematics or special characters enclose it in dollar signs for Latex. Do not write any conclusion or anything like that - just informations for the exam prep in markdown and put math and special symbols between dollar signs.\n\n"""
+    Write your response formated in markdown and if there is mathematics or special characters enclose it in double dollar signs for Latex. Do not write any conclusion or anything like that - just informations for the exam prep in markdown and put math and special symbols between double dollar signs.\n\n"""
     notes = []
     for i, chunk in enumerate(tqdm(chunks[start_chunk:])):
         try:
@@ -64,12 +64,11 @@ def generate_notes_for_chunks(model, chunks, output_filepath, start_chunk):
             if VERBOSE:
                 print(response.text)
         # Save notes to file after each chunk
-        save_notes_to_file(notes, output_filepath, mode='a')
+        save_notes_to_file(response.text, output_filepath, mode='a')
     return notes
 
-def save_notes_to_file(notes, output_filepath, mode='w'):
+def save_notes_to_file(note, output_filepath, mode='wa'):
     with open(output_filepath, mode) as output_file:
-        for note in notes:
             output_file.write(note + "\n\n")
 
 # Main function to tie everything together
@@ -77,7 +76,6 @@ def main(md_filepath, output_filepath, start_chunk):
     model = load_model()
     chunks = read_and_chunk_md_file(md_filepath)
     notes = generate_notes_for_chunks(model, chunks, output_filepath, start_chunk)
-    save_notes_to_file(notes, output_filepath, mode='a')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
