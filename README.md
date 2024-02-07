@@ -2,10 +2,14 @@
 Project to automaticly generate lecture notes using AI
 ## Prerequisites
 Python 3.9 or newer.
+
 Poetry for dependency management.
+
 Access to a terminal or command prompt.
+
+Being in country where Gemini API is allowed (works in USA but not in EU). You can use some VPN to work around this.
 ## Setup
-Install Poetry: If you haven't installed Poetry, follow the official (installation guide)[https://python-poetry.org/docs/].
+Install Poetry: If you haven't installed Poetry, follow the official [installation guide](https://python-poetry.org/docs/).
 
 ### Project Setup:
 Clone the repository to your local machine.
@@ -33,7 +37,7 @@ Activate the Poetry shell: `poetry shell`
 Run the script with the required arguments. For example:
 
 ```bash
-python img_to_md.py --imgpaths "path/to/images/*.png" --output "output.md" --verbose
+python3 img_to_md.py --imgpaths "path/to/images/*.png" --output "output.md" --verbose
 ```
 
 The script will process the images and generate a markdown file with the notes generated using gemini AI.
@@ -46,7 +50,7 @@ Activate the Poetry shell if not already active: `poetry shell`
 Execute the script, specifying the PDF path and desired output file. For example:
 
 ```bash
-python ainotes_from_pdf.py --pdf "path/to/presentation.pdf" --output "notes.md" --start 0 --batch_size 3 --verbose
+python3 ainotes_from_pdf.py --pdf "path/to/presentation.pdf" --output "notes.md" --start 0 --batch_size 3 --verbose
 ```
 The script will convert the PDF to a raw Markdown file, then enhance it into detailed notes, saving the result to notes.md.
 
