@@ -140,7 +140,7 @@ def save_notes_to_file(note: str, output_filepath: str, mode: str = 'wa') -> Non
             output_file.write(note + "\n\n")
 
 # Main function to tie everything together
-def main(pdf_filepath: str, output_filepath: str, start_chunk: int) -> None:
+def main(pdf_filepath: str, output_filepath: str, start_chunk: int, batch_size: int) -> None:
     """
     Main function to tie everything together.
 
@@ -151,7 +151,7 @@ def main(pdf_filepath: str, output_filepath: str, start_chunk: int) -> None:
     """
     model = load_model()
     raw_md_filepath = pdf_to_markdown(pdf_filepath, output_filepath)
-    chunks = read_and_chunk_md_file(raw_md_filepath)
+    chunks = read_and_chunk_md_file(raw_md_filepath, slides_per_chunk=batch_size)
     notes = generate_notes_for_chunks(model, chunks, output_filepath, start_chunk)
 
 
@@ -169,9 +169,12 @@ if __name__ == "__main__":
         "--start", type=int, help="Chunk to start from", default=0
     )
     parser.add_argument(
+        "--batch_size", type=int, help="Number of slides per chunk", default=3
+    )
+    parser.add_argument(
         "--verbose", action="store_true", help="Print the generated notes to stdout"
     )
     args = parser.parse_args()
     VERBOSE = args.verbose
 
-    main(args.pdf, args.output, args.start)
+    main(args.pdf, args.output, args.start, args.batch_size)
